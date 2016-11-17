@@ -1,5 +1,7 @@
 # RFCCAT
 
+[![Build Status](https://travis-ci.org/Robiathin/rfccat.svg?branch=master)](https://travis-ci.org/Robiathin/rfccat)
+
 A small, simple tool for reading RFCs from the command line. Uses libcurl to fetch RFC pages and displays them using a pager.
 
 ## Usage
