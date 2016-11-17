@@ -59,6 +59,7 @@ main(int argc, char const *argv[])
 
 			if (pipe(p)) {
 				fprintf(stderr, "Error opening pipe!\n");
+				err = 1;
 			} else {
 				if ((pid = fork()) == -1) {
 					fprintf(stderr, "Failed to fork!\n");
@@ -79,6 +80,8 @@ main(int argc, char const *argv[])
 					err = 1;
 				}
 			}
+		} else {
+			fprintf(stderr, "Error initializing curl!\n");
 		}
 
 		if (!err) {
