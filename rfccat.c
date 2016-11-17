@@ -95,6 +95,7 @@ main(int argc, char const *argv[])
 		curl_easy_cleanup(curl);
 	} else {
 		fprintf(stderr, "Error initializing curl!\n");
+		err = 1;
 	}
 
 	free(url);
