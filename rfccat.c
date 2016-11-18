@@ -46,6 +46,11 @@ main(int argc, char const *argv[])
 
 	int url_len = strlen(RFC_URL_PREFIX) + GET_INT_SIZE(rfc_num) + strlen(RFC_URL_SUFFIX) + 1;
 	char *url = malloc(url_len);
+	
+	if (url == NULL) {
+		fprintf(stderr, "Error allocation memory!");
+		exit(2);
+	}
 
 	snprintf(url, url_len, "%s%d%s", RFC_URL_PREFIX, rfc_num, RFC_URL_SUFFIX);
 
