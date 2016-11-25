@@ -57,6 +57,11 @@ main(int argc, char const *argv[])
 
 	int url_len = strlen(RFC_URL_PREFIX) + GET_INT_SIZE(rfc_num) + strlen(RFC_URL_SUFFIX) + 1;
 	char *url = malloc(url_len);
+	
+	if (url == NULL) {
+		fprintf(stderr, "Error allocation memory!");
+		exit(2);
+	}
 
 	snprintf(url, url_len, "%s%d%s", RFC_URL_PREFIX, rfc_num, RFC_URL_SUFFIX);
 
@@ -70,6 +75,7 @@ main(int argc, char const *argv[])
 
 			if (pipe(p)) {
 				fprintf(stderr, "Error opening pipe!\n");
+				err = 1;
 			} else {
 				if ((pid = fork()) == -1) {
 					fprintf(stderr, "Failed to fork!\n");
@@ -103,6 +109,9 @@ main(int argc, char const *argv[])
 		}
 
 		curl_easy_cleanup(curl);
+	} else {
+		fprintf(stderr, "Error initializing curl!\n");
+		err = 1;
 	}
 
 	free(url);
