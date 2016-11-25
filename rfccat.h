@@ -17,9 +17,14 @@
 #ifndef _RFCCAT_H_
 #define _RFCCAT_H_
 
+#define RFCCAT_VERSION "1.1.0"
+
 #define RFC_URL_PREFIX "https://www.ietf.org/rfc/rfc"
 #define RFC_URL_SUFFIX ".txt"
 
 #define GET_INT_SIZE(x) ((int) floor(log10(abs(x))) + 1)
+
+void	print_usage(void);
+void	print_version(void);
 
 #endif /* _RFCCAT_H_ */

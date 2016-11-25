@@ -37,10 +37,21 @@ main(int argc, char const *argv[])
 		exit(1);
 	}
 
+	if (strcmp(argv[1], "-h") == 0) {
+		print_usage();
+		exit(0);
+	}
+
+	if (strcmp(argv[1], "-v") == 0) {
+		print_version();
+		exit(0);
+	}
+
 	int rfc_num = atoi(argv[1]);
 
 	if (rfc_num <= 0) {
-		fprintf(stderr, "Invalid option for RFC number!\n");
+		fprintf(stderr, "Invalid option!\n");
+		print_usage();
 		exit(1);
 	}
 
@@ -99,4 +110,20 @@ main(int argc, char const *argv[])
 	curl_global_cleanup();
 
 	return err;
+}
+
+void
+print_usage(void) {
+	puts("Usage options:");
+	puts("\t-v\tPrint version information.");
+	puts("\t-h\tPrint this usage information.");
+	puts("");
+	puts("rfccat [RFC Number] (ex. rfccat 2616)");
+}
+
+void
+print_version(void) {
+	puts("RFCCAT Vesion: " RFCCAT_VERSION);
+	puts("Copyright (c) 2016 Robert Tate");
+	puts("This software is available under the ISC license.");
 }
