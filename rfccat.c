@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Robert Tate <rob@rtate.se>
+ * Copyright (c) 2016-2017 Robert Tate <rob@rtate.se>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -30,37 +30,41 @@ CURLcode res;
 int
 main(int argc, char const *argv[])
 {
-	int err = 0;
+	pid_t pid;
+	int err, url_len, rfc_num, p[2];
+	char *pager_args[2], *url;
+	
+	err = 0;
 
 	if (argc != 2) {
 		fprintf(stderr, "An RFC number must be specified!\n");
-		exit(1);
+		return (1);
 	}
 
 	if (strcmp(argv[1], "-h") == 0) {
 		print_usage();
-		exit(0);
+		return (0);
 	}
 
 	if (strcmp(argv[1], "-v") == 0) {
 		print_version();
-		exit(0);
+		return (0);
 	}
 
-	int rfc_num = atoi(argv[1]);
+	rfc_num = atoi(argv[1]);
 
 	if (rfc_num <= 0) {
 		fprintf(stderr, "Invalid option!\n");
 		print_usage();
-		exit(1);
+		return (1);
 	}
 
-	int url_len = strlen(RFC_URL_PREFIX) + GET_INT_SIZE(rfc_num) + strlen(RFC_URL_SUFFIX) + 1;
-	char *url = malloc(url_len);
+	url_len = strlen(RFC_URL_PREFIX) + GET_INT_SIZE(rfc_num) + strlen(RFC_URL_SUFFIX) + 1;
+	url = malloc(url_len);
 	
 	if (url == NULL) {
 		fprintf(stderr, "Error allocation memory!");
-		exit(2);
+		return (2);
 	}
 
 	snprintf(url, url_len, "%s%d%s", RFC_URL_PREFIX, rfc_num, RFC_URL_SUFFIX);
@@ -70,9 +74,6 @@ main(int argc, char const *argv[])
 
 	if (curl) {
 		if (isatty(STDOUT_FILENO)) {
-			pid_t pid;
-			int p[2];
-
 			if (pipe(p)) {
 				fprintf(stderr, "Error opening pipe!\n");
 				err = 1;
@@ -89,7 +90,9 @@ main(int argc, char const *argv[])
 					dup2(p[0], STDIN_FILENO);
 					close(p[0]);
 
-					char *pager_args[] = { getenv("PAGER") ? getenv("PAGER") : "less", NULL };
+					pager_args[0] = getenv("PAGER") ? getenv("PAGER") : "less";
+					pager_args[1] = NULL;
+
 					execvp(pager_args[0], pager_args);
 
 					fprintf(stderr, "Error executing pager!\n");
@@ -115,24 +118,22 @@ main(int argc, char const *argv[])
 	}
 
 	free(url);
-
 	curl_global_cleanup();
 
-	return err;
+	return (err);
 }
 
 void
 print_usage(void) {
-	puts("Usage options:");
-	puts("\t-v\tPrint version information.");
-	puts("\t-h\tPrint this usage information.");
-	puts("");
-	puts("rfccat [RFC Number] (ex. rfccat 2616)");
+	puts("Usage options:\n"\
+	    "\t-v\tPrint version information.\n"\
+	    "\t-h\tPrint this usage information.\n\n"\
+	    "rfccat [RFC Number] (ex. rfccat 2616)");
 }
 
 void
 print_version(void) {
-	puts("RFCCAT Vesion: " RFCCAT_VERSION);
-	puts("Copyright (c) 2016 Robert Tate");
-	puts("This software is available under the ISC license.");
+	puts("RFCCAT Vesion: " RFCCAT_VERSION "\n" \
+	    "Copyright (c) 2016-2017 Robert Tate\n" \
+	    "This software is available under the ISC license.");
 }
