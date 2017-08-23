@@ -24,6 +24,9 @@
 
 #include "rfccat.h"
 
+static void	print_usage(void);
+static void	print_version(void);
+
 CURL *curl;
 CURLcode res;
 
@@ -123,7 +126,7 @@ main(int argc, char const *argv[])
 	return (err);
 }
 
-void
+static void
 print_usage(void) {
 	puts("Usage options:\n"\
 	    "\t-v\tPrint version information.\n"\
@@ -131,7 +134,7 @@ print_usage(void) {
 	    "rfccat [RFC Number] (ex. rfccat 2616)");
 }
 
-void
+static void
 print_version(void) {
 	puts("RFCCAT Vesion: " RFCCAT_VERSION "\n" \
 	    "Copyright (c) 2016-2017 Robert Tate\n" \
