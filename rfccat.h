@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Robert Tate <rob@rtate.se>
+ * Copyright (c) 2016-2017 Robert Tate <rob@rtate.se>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -23,8 +23,5 @@
 #define RFC_URL_SUFFIX ".txt"
 
 #define GET_INT_SIZE(x) ((int) floor(log10(abs(x))) + 1)
-
-void	print_usage(void);
-void	print_version(void);
 
 #endif /* _RFCCAT_H_ */
